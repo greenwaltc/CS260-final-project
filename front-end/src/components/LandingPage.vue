@@ -38,17 +38,20 @@
     <transition v-if="showLogin || showRegister" name="modal">
       <div class="modal-mask">
         <div class="modal-container">
-          <form class="pure-form" @submit.prevent="upload">
+          <form class="pure-form" @submit.prevent="loginRegister">
             <legend v-if="showLogin">Login</legend>
             <legend v-if="showRegister">Register</legend>
-            <fieldset>
-              <input v-model="title" placeholder="Title" />
+            <fieldset v-if="showRegister">
+              <input v-model="fName" placeholder="First Name" />
+            </fieldset>
+            <fieldset v-if="showRegister">
+              <input v-model="lName" placeholder="Last Name" />
             </fieldset>
             <fieldset>
-              <textarea
-                v-model="description"
-                placeholder="Description"
-              ></textarea>
+              <input v-model="username" placeholder="Username" />
+            </fieldset>
+            <fieldset>
+              <input v-model="password" placeholder="Password" type="password"/>
             </fieldset>
             <fieldset>
               <p v-if="error" class="error">{{ error }}</p>
@@ -61,7 +64,8 @@
                 type="submit"
                 class="pure-button pure-button-primary right"
               >
-                Upload
+                <p v-if="showRegister">Register</p>
+                <p v-if="showLogin">Login</p>
               </button>
             </fieldset>
           </form>
@@ -81,6 +85,11 @@ export default {
     return {
       showLogin: false,
       showRegister: false,
+      fName: "",
+      lName: "",
+      username: "",
+      password: "",
+      error: null,
     };
   },
   methods: {
@@ -93,8 +102,11 @@ export default {
       this.showRegister = true;
     },
     close() {
-        this.showLogin = false;
-        this.showRegister = false;
+      this.showLogin = false;
+      this.showRegister = false;
+    },
+    loginRegister() {
+
     }
   },
 };
@@ -366,6 +378,14 @@ img {
   justify-content: space-between;
 }
 
+.modal-mask .modal-container .pure-form button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  margin: 0;
+}
+
 /* -- Mobile (smartphone) devies --
 */
 @media (max-width: 47em) {
@@ -374,7 +394,7 @@ img {
     flex-direction: column;
   }
   .modal-container {
-      width: 95%;
+    width: 95%;
   }
 }
 
