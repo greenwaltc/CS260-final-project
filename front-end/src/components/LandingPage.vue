@@ -51,7 +51,11 @@
               <input v-model="username" placeholder="Username" />
             </fieldset>
             <fieldset>
-              <input v-model="password" placeholder="Password" type="password"/>
+              <input
+                v-model="password"
+                placeholder="Password"
+                type="password"
+              />
             </fieldset>
             <fieldset>
               <p v-if="error" class="error">{{ error }}</p>
@@ -76,6 +80,7 @@
 </template>
 
 <script>
+import axios from "axios";
 // @ is an alias to /src
 
 export default {
@@ -94,20 +99,61 @@ export default {
   },
   methods: {
     showLoginForm() {
-      console.log("Showing login form");
       this.showLogin = true;
     },
     showRegisterForm() {
-      console.log("Showing register form");
       this.showRegister = true;
     },
     close() {
+      this.error = "";
       this.showLogin = false;
       this.showRegister = false;
     },
     loginRegister() {
-
-    }
+      if (this.showRegister) {
+        this.register();
+      }
+      else {
+        this.login();
+      }
+    },
+    async register() {
+      this.error = "";
+      this.errorLogin = "";
+      if (!this.fName || !this.lName || !this.username || !this.password) {
+        this.error = "Please enter all required fields.";
+        return;
+      }
+      try {
+        let response = await axios.post("/api/users", {
+          firstName: this.fName,
+          lastName: this.lName,
+          username: this.username,
+          password: this.password,
+        });
+        this.$root.$data.user = response.data.user;
+      } catch (error) {
+        this.error = error.response.data.message;
+        this.$root.$data.user = null;
+      }
+    },
+    async login() {
+      this.error = "";
+      if (!this.username || !this.password) {
+        this.error = "Please enter required fields.";
+        return;
+      }
+      try {
+        let response = await axios.post("/api/users/login", {
+          username: this.username,
+          password: this.password,
+        });
+        this.$root.$data.user = response.data.user;
+      } catch (error) {
+        this.errorLogin = "Error: " + error.response.data.message;
+        this.$root.$data.user = null;
+      }
+    },
   },
 };
 </script>
@@ -384,6 +430,11 @@ img {
   justify-content: center;
   height: 50px;
   margin: 0;
+}
+
+/* Error */
+.error {
+  color: red;
 }
 
 /* -- Mobile (smartphone) devies --
