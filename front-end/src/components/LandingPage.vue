@@ -33,6 +33,10 @@
           recipes digitally.
         </p>
       </div>
+
+      <div class="footer">
+        <a href="https://github.com/greenwaltc/CS260-final-project">Github</a>
+      </div>
     </div>
 
     <transition v-if="showLogin || showRegister" name="modal">
@@ -120,8 +124,7 @@ export default {
     loginRegister() {
       if (this.showRegister) {
         this.register();
-      }
-      else {
+      } else {
         this.login();
       }
     },
@@ -444,6 +447,23 @@ img {
 /* Error */
 .error {
   color: red;
+}
+
+/* Footer */
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 50px;
+  width: 100%;
+  background-color: rgb(151, 117, 117);
+  opacity: .5;
+  color: white;
+  text-align: center;
+}
+
+.footer a{
+  color: rgb(0, 0, 0);
 }
 
 /* -- Mobile (smartphone) devies --
