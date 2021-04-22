@@ -97,6 +97,14 @@ export default {
       error: null,
     };
   },
+  async created() {
+    try {
+      let response = await axios.get("/api/users");
+      this.$root.$data.user = response.data.user;
+    } catch (error) {
+      this.$root.$data.user = null;
+    }
+  },
   methods: {
     showLoginForm() {
       this.showLogin = true;
@@ -398,6 +406,7 @@ input {
 textarea {
   width: 100%;
   height: 100px;
+  max-height: 500px;
 }
 .placeholder {
   background: #f0f0f0;
